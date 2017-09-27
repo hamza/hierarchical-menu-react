@@ -1,0 +1,35 @@
+.appContainer {
+  width: 200px;
+  height: 400px;
+}
+
+.slideContainer {
+  position: relative;
+  height: 100%;
+  border: 1px solid black;
+  overflow-x: hidden;
+}
+
+.slidePage {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  position: absolute;
+  transition: transform 3s;
+}
+
+.slidePage:last-child {
+  transform: translateX(100%);
+}
+
+.arrowRight, .arrowLeft {
+  cursor: pointer;
+}
+
+.arrowRight {
+  float: right;
+}
+
+.arrowLeft {
+  float: left;
+}
