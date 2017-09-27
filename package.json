@@ -4,10 +4,11 @@
   "description": "Little demo to show a hierarchical menu in React.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --content-base dist/",
+    "dev": "webpack-dev-server -d --content-base dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Hamza Tayeb",
+  "repository": "https://github.com/hamza/hierarchical-menu-react",
   "license": "MIT",
   "dependencies": {
     "react": "^16.0.0",

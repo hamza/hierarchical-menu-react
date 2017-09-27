@@ -20,7 +20,7 @@ function Page(props) {
       className={style.slidePage}
       style={{
         backgroundColor: color,
-        left: `${position * 100}%`,
+        left: `${depth * 100}%`,
         transform: `translateX(${currentPage * -100}%)`,
       }}>
       {props.children}
@@ -32,8 +32,7 @@ function ListItem(props) {
   const { name, childNodes } = props;
 
   return (
-    <div>
-    </div>
+    <div></div>
   );
 }
 
@@ -66,26 +65,26 @@ export default class App extends React.Component {
     };
   }
 
-  drawPages(node, depth, pages) {
-    pages.push(
+  drawPages(node, depth) {
+    let pages = [
       <Page
         key={node.id}
         title={node.name}
-        items={node.childNodes}
+        items={node.childNodes || null}
         depth={depth}
         currentDepth={this.state.currentDepth}
-      />
-    );
+      />,
+    ];
 
     if (node.childNodes !== undefined) {
-      node.childNodes.forEach(child => this.drawPages(child, depth + 1, pages));
-    } else {
-      return pages;
+      return pages.concat(
+        node.childNodes.map(child => this.drawPages(child, depth + 1))
+      );
     }
   }
 
   render() {
-    console.log(this.drawPages(this.state.tree, 0, []));
+    var pages = this.drawPages(this.state.tree, 0);
 
     return (
       <div className={style.appContainer}>

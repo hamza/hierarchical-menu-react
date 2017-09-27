@@ -1,11 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/app.js',
+  entry: './src/app.jsx',
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js|.jsx$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
@@ -21,7 +21,7 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-            options: { name: 'index.html' }  
+            options: { name: 'index.html' }
           }
         ]
       }
