@@ -13,18 +13,44 @@ function Container(props) {
 }
 
 function Page(props) {
-  const { title, items, depth, currentDepth, goBack, handleItemClick, pageId, selectedPage, parentOfSelected } = props;
+  const {
+    title,
+    items,
+    depth,
+    currentDepth,
+    goBack,
+    handleItemClick,
+    pageId,
+    parentId,
+    selectedPage,
+    previouslySelectedPage
+  } = props;
+
+  const showMe = (selectedPage === pageId) || (previouslySelectedPage === pageId);
+
+  let backButton = null;
+
+  if (depth !== 0) {
+    backButton = (
+      <div
+        className={style.goBack}
+        onClick={() => goBack(parentId)}
+      >
+        ◀ Back
+      </div>
+    );
+  }
 
   return (
     <div
       className={style.slidePage}
       style={{
-        // display: (props.selectedPage === props.pageId) ? 'block' : 'none',
+        visibility: showMe ? 'visible' : 'hidden',
         left: `${depth * 100}%`,
         transform: `translateX(${currentDepth * -100}%)`,
       }}>
       <h1>{title}</h1>
-      {(depth !== 0) ? <div className={style.goBack} onClick={() => goBack(parentOfSelected)}>◀ Back</div> : null}
+      {backButton}
       <ul className={style.itemList}>
         {
           items.map(item =>
@@ -68,13 +94,27 @@ export default class App extends React.Component {
     this.state = {
       currentDepth: 0,
       selectedPage: 1,
-      parentOfSelected: null,
+      previouslySelectedPage: null,
       tree: {
         id: 1,
         name: "Places",
         childNodes: [
-          { id: 2, name: "Starbucks" },
           {
+            id: 2,
+            name: "Starbucks",
+            childNodes: [
+              { id: 12, name: "Counter" },
+              { id: 13, name: "Bathroom" },
+              {
+                id: 14,
+                name: "Tables",
+                childNodes: [
+                  { id: 15, name: "One by the back" },
+                  { id: 16, name: "High table" }
+                ]
+              },
+            ]
+          }, {
             id: 3,
             name: "ToMo HQ",
             childNodes: [
@@ -86,8 +126,7 @@ export default class App extends React.Component {
                   { id: 10, name: "Spot by the window" },
                   { id: 11, name: "Seat by the Polycom" }
                 ]
-              },
-              {
+              }, {
                 id: 6,
                 name: "Lobby",
                 childNodes: [
@@ -105,8 +144,8 @@ export default class App extends React.Component {
 
   handleItemClick(itemId, depth) {
     this.setState({
-      selected: itemId,
-      parentOfSelected: this.state.selected,
+      selectedPage: itemId,
+      previouslySelectedPage: this.state.selectedPage,
       currentDepth: depth,
     });
   }
@@ -114,16 +153,17 @@ export default class App extends React.Component {
   goBack(targetId) {
     this.setState({
       selectedPage: targetId,
+      previouslySelectedPage: this.state.selectedPage,
       currentDepth: this.state.currentDepth - 1,
     })
   }
 
   drawPages(node) {
     var pages = [];
-    var { currentDepth, selectedPage } = this.state;
+    var { currentDepth, selectedPage, previouslySelectedPage } = this.state;
     var { handleItemClick, goBack } = this;
 
-    function recurse(_node, depth) {
+    function recurse(_node, parentId, depth) {
       if (_node.childNodes !== undefined) {
         pages.push(
           <Page
@@ -134,16 +174,18 @@ export default class App extends React.Component {
             depth={depth}
             currentDepth={currentDepth}
             selectedPage={selectedPage}
+            previouslySelectedPage={previouslySelectedPage}
+            parentId={parentId}
             handleItemClick={handleItemClick}
             goBack={goBack}
           />
         );
 
-        _node.childNodes.forEach(child => recurse(child, depth + 1));
+        _node.childNodes.forEach(child => recurse(child, _node.id, depth + 1));
       }
     }
 
-    recurse(node, 0);
+    recurse(node, null, 0);
     return pages;
   }
 
