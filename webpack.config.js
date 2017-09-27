@@ -15,7 +15,16 @@ module.exports = {
         }
       }, {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            query: {
+              modules: true,
+              localIdentName: '[local]___[hash:base64:5]',
+            },
+          }
+        ]
       }, {
         test: /\index.html$/,
         use: [

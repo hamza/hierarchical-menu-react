@@ -1,3 +1,11 @@
+h1 {
+  font-size: 1.3em;
+  text-align: center;
+  padding: 10px 0;
+  margin: 0;
+  border-bottom: 1px solid black;
+}
+
 .appContainer {
   width: 200px;
   height: 400px;
@@ -15,21 +23,31 @@
   width: 100%;
   display: inline-block;
   position: absolute;
-  transition: transform 3s;
+  transition: transform 0.5s;
 }
 
 .slidePage:last-child {
   transform: translateX(100%);
 }
 
-.arrowRight, .arrowLeft {
+.itemList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.itemList li, .goBack {
   cursor: pointer;
+  padding: 0.5em 1em;
+  border-style: solid;
+  border-color: black;
+  border-width: 0 0 1px 0;
 }
 
-.arrowRight {
+.itemList li:hover, .goBack:hover {
+  background-color: lightgray;
+}
+
+.rightArrow {
   float: right;
-}
-
-.arrowLeft {
-  float: left;
 }
